@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify BST — EIF-203</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="topbar-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+      </svg>
+    </div>
+    Spotify BST
+  </a>
+  <div class="topbar-divider"></div>
+  <span class="topbar-course">EIF-203 · Estructuras Discretas para Informática</span>
+  <div class="topbar-badge">
+    <span class="topbar-badge-dot"></span>
+    <strong>UNA</strong> · Sede Chorotega · I Ciclo 2026
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Destino -->
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Destino
+      </p>
+      <div class="target-tabs">
+        <button class="target-tab active-fav" data-target="fav" onclick="setTarget(this,'fav')">♥ Favoritas</button>
+        <button class="target-tab" data-target="rec"  onclick="setTarget(this,'rec')">◷ Recientes</button>
+        <button class="target-tab" data-target="both" onclick="setTarget(this,'both')">Ambas</button>
+      </div>
+    </div>
+
+    <!-- Insertar -->
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Insertar canción
+      </p>
+      <div class="form-group">
+        <label>ID (número único)</label>
+        <input type="number" id="inp-id" placeholder="ej. 45" min="1">
+      </div>
+      <div class="form-group">
+        <label>Nombre de la canción</label>
+        <input type="text" id="inp-nombre" placeholder="ej. Stairway to Heaven">
+      </div>
+      <div class="form-group">
+        <label>Artista</label>
+        <input type="text" id="inp-artista" placeholder="ej. Led Zeppelin">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Género</label>
+          <input type="text" id="inp-genero" placeholder="Rock">
+        </div>
+        <div class="form-group">
+          <label>Duración</label>
+          <input type="text" id="inp-dur" placeholder="8:02">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="insertSong()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        Insertar
+      </button>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <!-- Buscar / Eliminar -->
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        Buscar / Eliminar
+      </p>
+      <div class="form-group">
+        <label>ID de la canción</label>
+        <input type="number" id="inp-search" placeholder="ej. 30">
+      </div>
+      <div class="btn-grid-2">
+        <button class="btn btn-ghost btn-sm" onclick="searchSong()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          Buscar
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteById()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          Eliminar
+        </button>
+      </div>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <!-- Recorridos -->
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"/></svg>
+        Recorridos
+      </p>
+      <div class="btn-grid-3" style="margin-bottom:6px">
+        <button class="btn btn-ghost btn-sm" onclick="showTraversal('in')">InOrden</button>
+        <button class="btn btn-ghost btn-sm" onclick="showTraversal('pre')">PreOrden</button>
+        <button class="btn btn-ghost btn-sm" onclick="showTraversal('post')">PostOrden</button>
+      </div>
+      <div class="btn-grid-2">
+        <button class="btn btn-ghost btn-sm" onclick="showHeight()">📐 Altura</button>
+        <button class="btn btn-ghost btn-sm" onclick="showCardinality()">🔢 Cardinal.</button>
+      </div>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <!-- Conjuntos -->
+    <div class="sidebar-section">
+      <p class="sidebar-section-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        Operaciones de conjuntos
+      </p>
+      <div class="btn-col">
+        <button class="btn btn-ghost btn-sm" onclick="opUnion()">♥ ∪ ◷  Unión</button>
+        <button class="btn btn-ghost btn-sm" onclick="opIntersection()">♥ ∩ ◷  Intersección</button>
+        <button class="btn btn-ghost btn-sm" onclick="opDiffFavRec()">♥ − ◷  Dif. (Fav − Rec)</button>
+        <button class="btn btn-ghost btn-sm" onclick="opDiffRecFav()">◷ − ♥  Dif. (Rec − Fav)</button>
+        <button class="btn btn-blue btn-sm"  onclick="resetTable()">↺ Ver todas</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Stats + Console -->
+    <div class="main-section">
+      <div class="stats-row" style="margin-bottom:16px">
+        <div class="stat-card green">
+          <div class="stat-label">♥ Favoritas</div>
+          <div class="stat-value green" id="stat-fav-count">0</div>
+          <div class="stat-sub">canciones</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Altura árbol Fav</div>
+          <div class="stat-value green" id="stat-fav-height">0</div>
+          <div class="stat-sub">niveles</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">◷ Recientes</div>
+          <div class="stat-value blue" id="stat-rec-count">0</div>
+          <div class="stat-sub">canciones</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Altura árbol Rec</div>
+          <div class="stat-value blue" id="stat-rec-height">0</div>
+          <div class="stat-sub">niveles</div>
+        </div>
+      </div>
+
+      <div class="console-wrap">
+        <div class="console-bar">
+          <span class="console-dot"></span>
+          <span class="console-dot"></span>
+          <span class="console-dot"></span>
+          <span class="console-label">bst-output</span>
+          <button class="console-clear" onclick="clearConsole()">clear</button>
+        </div>
+        <div class="console" id="console"></div>
+      </div>
+    </div>
+
+    <!-- Trees -->
+    <div class="main-section">
+      <div class="trees-grid">
+        <div class="tree-panel">
+          <div class="tree-panel-header">
+            <div class="tree-panel-indicator fav"></div>
+            <span class="tree-panel-title">Árbol Binario — Favoritas</span>
+            <span class="tree-panel-count" id="fav-count-label">0 canciones</span>
+          </div>
+          <div class="tree-svg-container" id="tree-fav">
+            <div class="tree-empty">Árbol vacío</div>
+          </div>
+        </div>
+        <div class="tree-panel">
+          <div class="tree-panel-header">
+            <div class="tree-panel-indicator rec"></div>
+            <span class="tree-panel-title">Árbol Binario — Recientes</span>
+            <span class="tree-panel-count" id="rec-count-label">0 canciones</span>
+          </div>
+          <div class="tree-svg-container" id="tree-rec">
+            <div class="tree-empty">Árbol vacío</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Song table -->
+    <div class="main-section">
+      <div class="song-table-wrap">
+        <div class="song-table-header">
+          <span class="song-table-title" id="table-header">Todas las canciones</span>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="resetTable()">↺ Reset</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>ID</th>
+              <th>Canción</th>
+              <th>Artista</th>
+              <th>Género</th>
+              <th>Duración</th>
+              <th>Lista</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="song-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script src="js/script.js"></script>
+</body>
+</html>
