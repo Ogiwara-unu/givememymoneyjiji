@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SortLab — Algoritmos de Ordenamiento</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ── TOPBAR ─────────────────────────────────────── -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="topbar-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+        <polyline points="16 7 22 7 22 13"/>
+      </svg>
+    </div>
+    SortLab
+  </a>
+  <div class="topbar-divider"></div>
+  <span class="topbar-course">Algoritmos de Ordenamiento · Parte 2</span>
+  <div class="topbar-badge">
+    <div class="topbar-badge-dot"></div>
+    <strong>7</strong> algoritmos activos
+  </div>
+</header>
+
+<!-- ── LAYOUT ─────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────────── -->
+  <aside class="sidebar">
+
+    <!-- Dataset config -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dataset
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de datos</label>
+        <div class="target-tabs" id="dataTypeTabs">
+          <button class="target-tab active-fav" data-type="random">Aleatorio</button>
+          <button class="target-tab" data-type="sorted">Ordenado</button>
+          <button class="target-tab" data-type="reverse">Inverso</button>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:6px;">
+        <div class="target-tabs" id="dataTypeTabs2">
+          <button class="target-tab" data-type="repeated">Repetidos</button>
+          <button class="target-tab" data-type="csv" id="csvTabBtn">CSV</button>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:8px;">
+        <div class="form-group">
+          <label>Tamaño (n)</label>
+          <input type="number" id="dataSize" value="500" min="10" max="100000" />
+        </div>
+        <div class="form-group">
+          <label>Rango máx</label>
+          <input type="number" id="dataRange" value="1000" min="2" max="99999" />
+        </div>
+      </div>
+
+      <div class="form-group" id="csvGroup" style="display:none;">
+        <label>Archivo CSV</label>
+        <input type="file" id="csvFile" accept=".csv" style="color:var(--text-secondary);font-size:12px;padding:6px 0;" />
+        <span style="font-size:10px;color:var(--text-muted);" id="csvInfo">Sin archivo cargado</span>
+        <div id="csvColWrap" style="display:none;margin-top:6px;">
+          <label style="font-size:11px;color:var(--text-secondary);font-weight:500;">Columna a ordenar</label>
+          <select id="csvColSelect" style="margin-top:4px;background:var(--bg-card);border:1.5px solid transparent;border-radius:var(--radius-xs);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:8px 10px;width:100%;outline:none;transition:border-color .15s;"></select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="btnGenerate" style="margin-top:4px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.43"/></svg>
+        Generar Dataset
+      </button>
+    </div>
+
+   
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+        Algoritmos
+      </div>
+      <div class="btn-col" id="algoCheckboxes">
+       
+      </div>
+    </div>
+
+    
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Ejecutar
+      </div>
+      <button class="btn btn-primary btn-full" id="btnRun">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Correr Benchmark
+      </button>
+      <div style="height:6px;"></div>
+      <button class="btn btn-ghost btn-full btn-sm" id="btnClearResults">Limpiar resultados</button>
+    </div>
+
+    
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Visualizador paso a paso
+      </div>
+      <div class="form-group">
+        <label>Algoritmo</label>
+        <select id="vizAlgo" style="background:var(--bg-card);border:1.5px solid transparent;border-radius:var(--radius-xs);color:var(--text-primary);font-family:var(--font-body);font-size:13px;padding:8px 10px;width:100%;outline:none;transition:border-color .15s;">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="heap">Heap Sort</option>
+          <option value="counting">Counting Sort</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Elementos (n)</label>
+          <input type="number" id="vizSize" value="40" min="8" max="120" />
+        </div>
+        <div class="form-group">
+          <label>Velocidad (ms)</label>
+          <input type="number" id="vizSpeed" value="60" min="5" max="2000" />
+        </div>
+      </div>
+      <div class="btn-grid-2">
+        <button class="btn btn-primary btn-sm" id="btnVizStart">▶ Iniciar</button>
+        <button class="btn btn-ghost btn-sm" id="btnVizPause">⏸ Pausar</button>
+      </div>
+      <div style="height:5px;"></div>
+      <button class="btn btn-ghost btn-full btn-sm" id="btnVizReset">↺ Resetear</button>
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN ─────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Stats -->
+    <section class="main-section">
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card green">
+          <div class="stat-label">Dataset Size</div>
+          <div class="stat-value green" id="statSize">—</div>
+          <div class="stat-sub">elementos</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Más Rápido</div>
+          <div class="stat-value green" id="statFastest">—</div>
+          <div class="stat-sub" id="statFastestTime">—</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Más Lento</div>
+          <div class="stat-value blue" id="statSlowest">—</div>
+          <div class="stat-sub" id="statSlowestTime">—</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Tipo Dataset</div>
+          <div class="stat-value blue" style="font-size:16px;margin-top:4px;" id="statType">—</div>
+          <div class="stat-sub" id="statTypeRange">—</div>
+        </div>
+      </div>
+    </section>
+
+   
+    <section class="main-section">
+      <div class="console-wrap">
+        <div class="console-bar">
+          <div class="console-dot"></div>
+          <div class="console-dot"></div>
+          <div class="console-dot"></div>
+          <span class="console-label">BENCHMARK LOG</span>
+          <button class="console-clear" id="consoleClear">clear</button>
+        </div>
+        <div class="console" id="console">
+          <div class="log-info">» SortLab inicializado. Genera un dataset y ejecuta el benchmark.</div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="main-section">
+      <div class="song-table-wrap">
+        <div class="song-table-header">
+          <span class="song-table-title">Visualizador <span id="vizTitle">— selecciona un algoritmo</span></span>
+          <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+            <span style="font-size:11px;color:var(--text-muted);" id="vizStepLabel">paso 0 / 0</span>
+          </div>
+        </div>
+        <div style="padding:16px 20px;">
+          <canvas id="vizCanvas" height="160" style="width:100%;border-radius:var(--radius-sm);background:var(--bg-card);display:block;"></canvas>
+          <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">
+            <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block;"></span>Comparando</span>
+            <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--rec-color);display:inline-block;"></span>Intercambiando</span>
+            <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#a855f7;display:inline-block;"></span>Ordenado</span>
+            <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,.18);display:inline-block;"></span>Normal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="main-section">
+      <div class="trees-grid">
+        <div class="tree-panel">
+          <div class="tree-panel-header">
+            <div class="tree-panel-indicator fav"></div>
+            <span class="tree-panel-title">Tiempo de Ejecución (ms)</span>
+            <span class="tree-panel-count" id="chartTimeCount">0 runs</span>
+          </div>
+          <div class="tree-svg-container" style="min-height:260px;padding:20px;">
+            <canvas id="chartTime" style="width:100%;max-height:220px;"></canvas>
+          </div>
+        </div>
+        <div class="tree-panel">
+          <div class="tree-panel-header">
+            <div class="tree-panel-indicator rec"></div>
+            <span class="tree-panel-title">Comparaciones e Intercambios</span>
+            <span class="tree-panel-count" id="chartOpsCount">0 runs</span>
+          </div>
+          <div class="tree-svg-container" style="min-height:260px;padding:20px;">
+            <canvas id="chartOps" style="width:100%;max-height:220px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="main-section">
+      <div class="song-table-wrap">
+        <div class="song-table-header">
+          <span class="song-table-title">Resultados <span id="resultCount"></span></span>
+          <button class="btn btn-ghost btn-sm" id="btnExport" style="margin-left:auto;">
+            ↓ Exportar CSV
+          </button>
+        </div>
+        <div id="resultsTableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;">#</th>
+                <th>Algoritmo</th>
+                <th>Tipo</th>
+                <th>n</th>
+                <th>Tiempo (ms)</th>
+                <th>Comparaciones</th>
+                <th>Intercambios</th>
+                <th>Complejidad</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:32px;">Sin resultados aún — ejecuta el benchmark.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusions -->
+    <section class="main-section">
+      <div class="song-table-wrap">
+        <div class="song-table-header">
+          <span class="song-table-title">Conclusiones <span>recomendaciones por caso de uso</span></span>
+        </div>
+        <div style="padding:20px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;" id="conclusionsGrid">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
